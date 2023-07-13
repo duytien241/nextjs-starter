@@ -1,0 +1,90 @@
+{
+  "name": "nextjs-base",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "install:clean": "rm -rf node_modules && rm yarn.lock && yarn",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "debug:dev": "NODE_OPTIONS='--inspect' next dev",
+    "check-types": "tsc",
+    "check-lint": "eslint . --ignore-path .gitignore",
+    "check-format": "prettier --list-different --ignore-path .gitignore .",
+    "lint": "eslint . --fix --ignore-path .gitignore",
+    "format": "prettier --write --list-different --ignore-path .gitignore .",
+    "validate": "npm-run-all --parallel check-types lint format",
+    "validate:build": "npm-run-all --parallel validate build",
+    "prepare": "husky install",
+    "setup-db": "npx fauna-schema-migrate apply all",
+    "setup-docker-db": "cross-env FAUNA_ADMIN_KEY=secret FAUNADB_DOMAIN=localhost FAUNADB_SCHEME=http FAUNADB_PORT=8443 npm run setup-db",
+    "clear-db": "node ./src/adapters/fauna/clear-db.mjs",
+    "clear-docker-db": "cross-env USE_FAUNA_DOCKER=true npm run clear-db"
+  },
+  "lint-staged": {
+    "**/*.(ts|tsx|js)": [
+      "eslint --fix .",
+      "prettier --write --ignore-unknown"
+    ],
+    "**/*.(md|json)": "prettier --wirte --ignore-unknown"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "commitlint -E HUSKY_GIT_PARAMS",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "dependencies": {
+    "@badrap/bar-of-progress": "0.1.2",
+    "@headlessui/react": "1.4.1",
+    "@heroicons/react": "1.0.4",
+    "axios": "^1.4.0",
+    "date-fns": "^2.30.0",
+    "eslint": "^8.37.0",
+    "eslint-config-next": "^13.2.4",
+    "faunadb": "4.8.0",
+    "next": "13.4.7",
+    "next-auth": "3.29.0",
+    "next-seo": "6.1.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-query": "3.39.3",
+    "sharp": "^0.32.0",
+    "shiki": "^0.14.1",
+    "slugify": "1.6.0",
+    "tailwind-merge": "^1.11.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.5.1",
+    "@commitlint/config-conventional": "^17.4.4",
+    "@tailwindcss/aspect-ratio": "0.4.2",
+    "@tailwindcss/forms": "0.5.3",
+    "@tailwindcss/line-clamp": "0.4.4",
+    "@tailwindcss/typography": "0.5.9",
+    "@types/node": "^18.15.11",
+    "@types/react": "^18.0.31",
+    "@types/react-dom": "^18.0.11",
+    "autoprefixer": "10.4.14",
+    "cross-env": "7.0.3",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-cypress": "^2.13.2",
+    "eslint-plugin-jest": "^27.2.1",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-security": "^1.7.1",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "eslint-plugin-sonarjs": "^0.19.0",
+    "husky": ">=6",
+    "lint-staged": "^13.2.0",
+    "npm-run-all": "4.1.5",
+    "postcss": "^8.4.21",
+    "prettier": "2.8.8",
+    "prettier-plugin-tailwindcss": "^0.2.6",
+    "sass": "^1.60.0",
+    "tailwindcss": "3.3.2",
+    "typescript": "4.5.2"
+  }
+}
